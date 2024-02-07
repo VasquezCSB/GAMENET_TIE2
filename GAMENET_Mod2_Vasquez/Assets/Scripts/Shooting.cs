@@ -15,7 +15,7 @@ public class Shooting : MonoBehaviourPunCallbacks
 
     //HP Related
     [Header("HP Related Stuff")]
-    //public float startHealth = 100;
+    public float startHealth = 100;
     public Image healthBar;
     private float health;
 
