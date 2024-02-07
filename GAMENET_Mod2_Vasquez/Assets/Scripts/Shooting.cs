@@ -13,8 +13,9 @@ public class Shooting : MonoBehaviourPunCallbacks
     public TMP_Text playerName;
     public TMP_Text enemyName;
 
+    //HP Related
     [Header("HP Related Stuff")]
-    public float startHealth = 100;
+    //public float startHealth = 100;
     public Image healthBar;
     private float health;
 
