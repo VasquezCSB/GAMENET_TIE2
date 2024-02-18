@@ -9,9 +9,11 @@ public class Shooting : MonoBehaviourPunCallbacks
 {
     public Camera camera;
     public GameObject hitEffectPrefab;
-    public static KillListing killListing;
+    //public KillFeed killFeed;
+    //public KillListing killListing;
     public TMP_Text playerName;
     public TMP_Text enemyName;
+    public TMP_Text winner;
 
     //HP Related
     [Header("HP Related Stuff")]
@@ -29,6 +31,7 @@ public class Shooting : MonoBehaviourPunCallbacks
         health = startHealth;
         healthBar.fillAmount = health / startHealth;
         animator = this.GetComponent<Animator>();
+
     }
 
     // Update is called once per frame
@@ -68,23 +71,40 @@ public class Shooting : MonoBehaviourPunCallbacks
 
             Die();
             //Who raycast hit + killed + owner(you) 
+            //KillFeed.instance.AddNewKillListing(info.Sender.NickName, info.photonView.Owner.NickName);
+            //killListing.SetNames(info.Sender.NickName, info.photonView.Owner.NickName);
             Debug.Log(info.Sender.NickName + " killed " + info.photonView.Owner.NickName);
-            photonView.RPC("Win", RpcTarget.AllBuffered, 1);
+            photonView.RPC("Win", RpcTarget.AllBuffered);
+            
 
         }
     }
 
     [PunRPC]
-    public void Win(int winCount, PhotonMessageInfo info)
-    {
-        winCounter += winCount;
-        killListing.SetNames(info.Sender.NickName, info.photonView.Owner.NickName);
+    public void Win(PhotonMessageInfo info)
+    { 
 
-        if (winCounter == 5)
+        //winCounter += winCount;
+        Invoke(nameof(WinScore), 0.0005f);
+
+        if (winCounter == 10)
         {
-            Debug.Log(info.Sender.NickName + " wins ");
+            photonView.RPC("Winner", RpcTarget.AllBuffered);
+            winner.gameObject.SetActive(true);
             //Debug.Log(info.Sender.NickName + " killed " + info.photonView.Owner.NickName);
         }
+    }
+
+    [PunRPC]
+    public void Winner(PhotonMessageInfo info)
+    {
+        Debug.Log(info.Sender.NickName + " wins ");
+    }
+
+    public void WinScore()
+    { 
+        winCounter += 1;
+        Debug.Log("WinCounter: " + winCounter);
     }
 
     [PunRPC]

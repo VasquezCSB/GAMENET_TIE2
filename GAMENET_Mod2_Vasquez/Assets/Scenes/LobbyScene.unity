@@ -1908,6 +1908,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   connectionStatustext: {fileID: 38442580}
+  playerPrefab: {fileID: 5495341730620720945, guid: 62460c8269c3cab439c38c07d8e59112, type: 3}
   playerNameInput: {fileID: 237746957}
   loginUIPanel: {fileID: 1898342735}
   gameOptionsPanel: {fileID: 1897633495}
