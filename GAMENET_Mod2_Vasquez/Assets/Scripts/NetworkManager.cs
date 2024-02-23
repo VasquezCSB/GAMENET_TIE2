@@ -7,10 +7,13 @@ using Photon.Realtime;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
+    public static NetworkManager instance;
+
     [Header("Connection Status Panel")]
     public Text connectionStatustext;
 
     [Header("Login UI Panel")]
+    public PhotonView playerPrefab;
     public InputField playerNameInput;
     public GameObject loginUIPanel;
 
@@ -45,6 +48,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     private Dictionary<string, GameObject> roomListGameObjects;
     private Dictionary<int, GameObject> playerListGameObjects;
 
+    private void Awake()
+    {
+        instance = this;
+    }
+
     #region Unity Functions
     // Start is called before the first frame update
     void Start()
@@ -75,7 +83,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             Debug.Log("Player name is invalid!");
         } else
         {
-            PhotonNetwork.LocalPlayer.NickName = playerName;
+            PhotonNetwork.LocalPlayer.NickName = playerNameInput.text;
+            //PhotonNetwork.NickName = playerNameInput.text;
             PhotonNetwork.ConnectUsingSettings();
         }
     }
