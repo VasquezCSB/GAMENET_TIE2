@@ -36,6 +36,7 @@ public class Player : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true; //To prevent player form falling
+        readyToJump = true;
     }
     private void Update()
     {
@@ -60,6 +61,8 @@ public class Player : MonoBehaviour
     //For Returning x and z values
     private void MyInput()
     {
+        Debug.Log("That");
+
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
 

@@ -8,6 +8,10 @@ public class GameManager : MonoBehaviourPunCallbacks
 {
     [SerializeField] private GameObject playerPrefab;
 
+    public static GameManager instance;
+    public List<GameObject> lapTriggers = new List<GameObject>();
+    public GameObject[] finisherTextUI;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -15,17 +19,15 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             if(playerPrefab != null)
             {
-                int xRandomPoint = Random.Range(-20,20);
-                int zRandomPoint = Random.Range(-20,20);
-                PhotonNetwork.Instantiate(playerPrefab.name, new Vector3(xRandomPoint, 0, zRandomPoint), Quaternion.identity);
+                StartCoroutine(DelayedPlayerSpawn());
+
             }
         }
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        foreach(GameObject go in finisherTextUI)
+        {
+            go.SetActive(false);
+        }
     }
 
     public override void OnJoinedRoom()
@@ -38,9 +40,12 @@ public class GameManager : MonoBehaviourPunCallbacks
         Debug.Log(newPlayer.NickName + " has joined the room " + PhotonNetwork.CurrentRoom.Name);
         Debug.Log("Room has now " + PhotonNetwork.CurrentRoom.PlayerCount + " /10 players.");
     }
-    //public override void OnPlayerEnteredRoom(Player newPlayer)
-    //{
-    //    Debug.Log(newPlayer.NickName + " has joined the room " + PhotonNetwork.CurrentRoom.Name);
-    //    Debug.Log("Room has now " + PhotonNetwork.CurrentRoom.PlayerCount + " /10 players.");
-    //}
+
+    IEnumerator DelayedPlayerSpawn()
+    {
+        yield return new WaitForSeconds(3);
+        int xRandomPoint = Random.Range(-10, 10);
+        int zRandomPoint = Random.Range(-10, 10);
+        PhotonNetwork.Instantiate(playerPrefab.name, new Vector3(xRandomPoint, 7, zRandomPoint), Quaternion.identity);
+    }
 }
